@@ -1,15 +1,8 @@
-require "slide/selector/core/version"
-
 module Slide
   module Selector
-    class Engine < ::Rails::Engine
-      class ActionView::Helpers::FormBuilder
-        include ActionView::Helpers::TagHelper
-        include ActionView::Helpers::FormTagHelper
-        include ActionView::Helpers::FormOptionsHelper
-        include ActionView::Helpers::CaptureHelper
-        include ActionView::Helpers::AssetTagHelper
-        def slide_selector(selectors, ranges, select_options, options = {})
+    module Helpers
+      module HelperMethods
+        def slide_selector_tag(selectors, ranges, select_options, options = {})
           options[:suggestions] = false if options[:suggestions].nil?
           options[:slider_step] = 1 if options[:slider_step].nil?
           options[:value] = [select_options.keys.first, select_options.keys.last] if options[:value].nil?
@@ -29,6 +22,7 @@ module Slide
           end)+
           generate_script(selectors, ranges, options).html_safe
         end
+        private
         def generate_script(selectors, ranges, options)
           return <<-SCRIPT
             <script type='text/javascript'>
@@ -37,10 +31,6 @@ module Slide
           SCRIPT
         end
       end
-    end
-    ActiveSupport.on_load :action_view do
-      require "slide/selector/helpers/helper_methods"
-      ::ActionView::Base.send :include, Helpers::HelperMethods
     end
   end
 end

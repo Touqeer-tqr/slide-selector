@@ -1,6 +1,6 @@
 # Custom Range Selector
 
-[![N|Solid](https://raw.githubusercontent.com/Touqeer-tqr/custom-form/master/app/assets/images/range-selector.png)]()
+[![N|Solid](https://raw.githubusercontent.com/Touqeer-tqr/slide-selector/master/vendor/assets/images/range-selector.png)]()
 
 ## Details
 Sample app about how to create custom input tags for form
@@ -24,10 +24,21 @@ Or install it yourself as:
 
 ## Usage
 
+Rename applitcation.css to applitcation.scss and add `@import "slide-selector.css";`
+In applitcation.js add `//= require slide-selector` after `//= require_tree .`
+
+Some examples of using this tag
+With form:
 ```
 <%= form_for root_path do |f| %>
-  <%= f.range_selector [:min_rank, :max_rank], [0, 100], drop_down_options, type: 'amount' %>
+  <%= f.slide_selector [:min_rank, :max_rank], [0, 100], drop_down_options, type: 'amount', selector: false, slider_step: 5 %>
+  <br><br>
+  <%= f.slide_selector [:min_rank2, :max_rank2], [0, 10000], drop_down_options2 %>
 <% end %>
+```
+Without form:
+```
+<%= slide_selector_tag [:min_rank3, :max_rank3], [0, 10000], drop_down_options2 %>
 ```
 
 ## Development
