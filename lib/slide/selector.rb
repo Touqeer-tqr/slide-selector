@@ -12,27 +12,38 @@ module Slide
         def slide_selector(selectors, ranges, select_options, options = {})
           options[:suggestions] = false if options[:suggestions].nil?
           options[:slider_step] = 1 if options[:slider_step].nil?
-          options[:value] = [select_options.keys.first, select_options.keys.last] if options[:value].nil?
-          options[:type] = options[:type] == 'amount' ? '$' : ''
           options[:selector] = true if options[:selector].nil?
+          options[:value] = [select_options.keys.first, select_options.keys.last] if options[:value].nil? && options[:selector]
+          options[:type] = options[:type] == 'amount' ? '$' : ''
           selectors = selectors.map &:to_s
+          get_select_field = lambda { |selector, select_type|
+            result = self.hidden_field(selector)
+            if result.include?('value') 
+              result = Hash.from_xml(result)['input']
+              selected = {result['value'] => result['value']}
+              return self.select(selector, options_for_select(select_options.merge(selected), selected.to_a.last))
+            else
+              selected = select_type == 'min' ? select_options.first : select_options.to_a.last
+              return self.select(selector, options_for_select(select_options, selected))
+            end
+          }
           (if options[:selector]
-            select_tag(selectors[0], options_for_select(select_options), value: options[:value][0])
+            get_select_field.call(selectors[0], 'min')
           else
-            text_field_tag(selectors[0], nil, value: options[:value][0])
+            self.text_field(selectors[0])
           end)+
           text_field_tag(selectors[0]+'_'+selectors[1], nil, data: {'slider-step': options[:slider_step]})+
           (if options[:selector]
-            select_tag(selectors[1], options_for_select(select_options), value: options[:value][1])
+            get_select_field.call(selectors[1], 'max')
           else
-            text_field_tag(selectors[1], nil, value: options[:value][1])
+            self.text_field(selectors[1])
           end)+
           generate_script(selectors, ranges, options).html_safe
         end
         def generate_script(selectors, ranges, options)
           return <<-SCRIPT
             <script type='text/javascript'>
-              setSlider(#{selectors.map(&:to_s)}, #{ranges.map(&:to_s)}, #{options.to_json}, '#{selectors[0]+'_'+selectors[1]}')
+              setSlider(#{selectors.map{ |field_name| object_name.to_s+'_'+field_name.to_s}}, #{ranges.map(&:to_s)}, #{options.to_json}, '#{selectors[0]+'_'+selectors[1]}')
             </script>
           SCRIPT
         end
