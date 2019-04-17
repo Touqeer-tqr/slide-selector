@@ -9,26 +9,19 @@ module Slide
           options[:type] = options[:type] == 'amount' ? '$' : ''
           options[:selector] = true if options[:selector].nil?
           selectors = selectors.map &:to_s
+          "<div data-slide-selector=true data-options='{\"suggestions\": #{options[:suggestions]}, \"selector\": #{options[:selector]}, \"type\": \"#{options[:type]}\"}' >".html_safe+
           (if options[:selector]
             select_tag(selectors[0], options_for_select(select_options), value: options[:value][0])
           else
             text_field_tag(selectors[0], nil, value: options[:value][0])
           end)+
-          text_field_tag(selectors[0]+'_'+selectors[1], nil, data: {'slider-step': options[:slider_step]})+
+          text_field_tag(selectors[0]+'_'+selectors[1], nil, data: {'slider-step': options[:slider_step], 'slide-range': ranges.map(&:to_s)})+
           (if options[:selector]
             select_tag(selectors[1], options_for_select(select_options), value: options[:value][1])
           else
             text_field_tag(selectors[1], nil, value: options[:value][1])
           end)+
-          generate_script(selectors, ranges, options).html_safe
-        end
-        private
-        def generate_script(selectors, ranges, options)
-          return <<-SCRIPT
-            <script type='text/javascript'>
-              setSlider(#{selectors.map(&:to_s)}, #{ranges.map(&:to_s)}, #{options.to_json}, '#{selectors[0]+'_'+selectors[1]}')
-            </script>
-          SCRIPT
+          "</div>".html_safe
         end
       end
     end

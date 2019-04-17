@@ -98,7 +98,6 @@ setSlider = function(selectors, ranges, options, sliderField){
     slideValue.val(ranges[1]);
   }
   sliderRange = [parseFloat(slideMinValue.val().replace(/[$,]/g, '')), parseFloat(slideValue.val().replace(/[$,]/g, ''))];
-  console.log(sliderRange);
   mySlider = new Slider('#'+sliderField, {
     id: 'slider12c',
     min: parseFloat(ranges[0]),
@@ -123,3 +122,17 @@ setSlider = function(selectors, ranges, options, sliderField){
   $('#'+selectors[1]).blur();
   setOnChangeListner(selectors, ranges, mySlider);
 }
+
+$( document ).ready(function() {
+  $('[data-slide-selector=true]').each(function() {
+    dataTags = $(this).data('options');
+    if(!dataTags['selector']){
+      inputTags = $(this).find('input');
+      setSlider([inputTags[0].id, inputTags[2].id], $(inputTags[1]).data('slideRange'), $(this).data('options'), inputTags[1].id);
+    }else{
+      selectTags = $(this).find('select');
+      inputTags = $(this).find('input');
+      setSlider([selectTags[0].id, selectTags[1].id], $(inputTags[0]).data('slideRange'), $(this).data('options'), inputTags[0].id);
+    }
+  });
+});

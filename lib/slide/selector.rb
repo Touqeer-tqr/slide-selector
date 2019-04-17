@@ -27,25 +27,19 @@ module Slide
               return self.select(selector, options_for_select(select_options, selected))
             end
           }
+          "<div data-slide-selector=true data-options='{\"suggestions\": #{options[:suggestions]}, \"selector\": #{options[:selector]}, \"type\": \"#{options[:type]}\"}' >".html_safe+
           (if options[:selector]
             get_select_field.call(selectors[0], 'min')
           else
             self.text_field(selectors[0])
           end)+
-          text_field_tag(selectors[0]+'_'+selectors[1], nil, data: {'slider-step': options[:slider_step]})+
+          text_field_tag(selectors[0]+'_'+selectors[1], nil, data: {'slider-step': options[:slider_step], 'slide-range': ranges.map(&:to_s)})+
           (if options[:selector]
             get_select_field.call(selectors[1], 'max')
           else
             self.text_field(selectors[1])
           end)+
-          generate_script(selectors, ranges, options).html_safe
-        end
-        def generate_script(selectors, ranges, options)
-          return <<-SCRIPT
-            <script type='text/javascript'>
-              setSlider(#{selectors.map{ |field_name| object_name.to_s+'_'+field_name.to_s}}, #{ranges.map(&:to_s)}, #{options.to_json}, '#{selectors[0]+'_'+selectors[1]}')
-            </script>
-          SCRIPT
+          "</div>".html_safe
         end
       end
     end
