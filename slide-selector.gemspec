@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["tqr093@gmail.com"]
 
   spec.summary       = %q{custom input tag with range-slider & text-field type selectors}
-  spec.description   = %q{https://github.com/Touqeer-tqr/custom-form contains the sample app}
+  spec.description   = %q{Custom form field_tag of range-slider with text_field type selector. You can either choose from drop down or enter your own value and the slider will auto-adjust or you can use the slider to adjust values. This all through on form field f.slide_selector. Check out https://github.com/Touqeer-tqr/custom-form for sample app}
   spec.homepage      = "https://github.com/Touqeer-tqr/slide-selector"
   spec.license       = "MIT"
 

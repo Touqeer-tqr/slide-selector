@@ -1,4 +1,6 @@
-# Custom Range Selector
+# Slide Selector
+
+[![Gem Version](https://badge.fury.io/rb/slide-selector.svg)](https://badge.fury.io/rb/slide-selector)
 
 [![N|Solid](https://raw.githubusercontent.com/Touqeer-tqr/slide-selector/master/vendor/assets/images/range-selector.png)]()
 
