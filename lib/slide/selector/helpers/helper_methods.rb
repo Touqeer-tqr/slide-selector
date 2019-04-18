@@ -9,7 +9,7 @@ module Slide
           options[:type] = options[:type] == 'amount' ? '$' : ''
           options[:selector] = true if options[:selector].nil?
           selectors = selectors.map &:to_s
-          "<div data-slide-selector=true data-options='{\"suggestions\": #{options[:suggestions]}, \"selector\": #{options[:selector]}, \"type\": \"#{options[:type]}\"}' >".html_safe+
+          "<div class='#{options[:class]}' data-slide-selector=true data-options='{\"suggestions\": #{options[:suggestions]}, \"selector\": #{options[:selector]}, \"type\": \"#{options[:type]}\"}' >".html_safe+
           (if options[:selector]
             select_tag(selectors[0], options_for_select(select_options), value: options[:value][0])
           else

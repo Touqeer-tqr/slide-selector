@@ -24,40 +24,47 @@ Or install it yourself as:
 
 ## Usage
 
-Rename applitcation.css to applitcation.scss and add `@import "slide-selector.css";`
-In applitcation.js add `//= require slide-selector` after `//= require_tree .`
+* Rename applitcation.css to applitcation.scss and add `@import "slide-selector.css";`
+* In applitcation.js add `//= require slide-selector` after `//= require_tree .`
 
-Some examples of using this tag
+#### Syntax:
+
+```
+<%= slide_selector_tag [:min_field, :max_field], [:min_range, :max_range], options_for_select, options = {} %>
+```
+
+#### Options:
+
+* `:slider_step` - To specify the size of each moment.
+* `:type` - For dollar type use `'amount'`.
+* `:selector` - To disable drop-down options (`options_for_select` can be nil for this).
+* `:class` - Set class to div
+
+#### Examples:
 With form:
 ```
 <%= form_for root_path do |f| %>
-  <%= f.slide_selector [:min_rank, :max_rank], [0, 100], drop_down_options_dollar, type: 'amount', selector: false, slider_step: 5 %>
+  <%= f.slide_selector [:min_rank, :max_rank], [0, 100], amount_drop_down_options, type: 'amount', selector: false, slider_step: 5 %>
   <br><br>
-  <%= f.slide_selector [:min_rank2, :max_rank2], [0, 10000], drop_down_options %>
+  <%= f.slide_selector [:min_rank2, :max_rank2], [0, 10000], simple_drop_down_options %>
 <% end %>
 ```
 Without form:
 ```
-<%= slide_selector_tag [:min_rank3, :max_rank3], [0, 10000], drop_down_options %>
+<%= slide_selector_tag [:min_rank3, :max_rank3], [0, 10000], simple_drop_down_options %>
 ```
 
-In application_helper.rb
+In `application_helper.rb`
 ```
 module ApplicationHelper
-  def drop_down_options
-    {"$0.01" => 1, "$0.50" => 50, "$1" => 100, "$2" => 200, "$3" => 300, "$4" => 400, "$5" => 500, "$10" => 1000, "$15" => 1500, "$25" => 2500, "$50" => 5000, "$75" => 7500, "$100" => 10000}
+  def amount_drop_down_options
+    {"$1" => 100, "$5" => 500, "$10" => 1000, "$25" => 2500, "$50" => 5000, "$75" => 7500, "$100" => 10000, "$250" => 25000, "$500" => 50000}
   end
-  def drop_down_options2
-    {"1" => 1, "50" => 50, "100" => 100, "200" => 200, "300" => 300, "400" => 400, "500" => 500, "1000" => 1000, "1500" => 1500, "2500" => 2500, "5000" => 5000, "7500" => 7500, "10000" => 10000}
+  def simple_drop_down_options
+    {"1" => 1, "50" => 50, "100" => 100, "200" => 200, "300" => 300, "400" => 400, "500" => 500, "1000" => 1000, "1500" => 1500, "2000" => 2000, "5000" => 5000}
   end
 end
 ```
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
